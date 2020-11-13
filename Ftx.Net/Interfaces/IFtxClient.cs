@@ -1,6 +1,7 @@
 ﻿using CryptoExchange.Net.Objects;
 using Ftx.Net.Objects;
 using Ftx.Net.Objects.Account;
+using Ftx.Net.Objects.FilterRequests;
 using Ftx.Net.Objects.Futures;
 using Ftx.Net.Objects.Markets;
 using Ftx.Net.Objects.Orders;
@@ -109,7 +110,7 @@ namespace Ftx.Net.Interfaces
 
         Task<CallResult<List<FtxDeposit>>> GetDepositHistoryAsync(int? limit = null, DateTime? from = null, DateTime? to = null, CancellationToken ct = default);
         CallResult<List<FtxDeposit>> GetDepositHistory(int? limit = null, DateTime? from = null, DateTime? to = null);
-        
+
         Task<CallResult<List<FtxWithdrawal>>> GetWithdrawalHistoryAsync(int? limit = null, DateTime? from = null, DateTime? to = null, CancellationToken ct = default);
         CallResult<List<FtxWithdrawal>> GetWithdrawalHistory(int? limit = null, DateTime? from = null, DateTime? to = null);
 
@@ -129,30 +130,36 @@ namespace Ftx.Net.Interfaces
         Task<CallResult<string>> DeleteSavedAddressAsync(int addressId, CancellationToken ct = default);
         CallResult<string> DeleteSavedAddress(int addressId);
 
-        Task<CallResult<List<FtxOrder>>> GetOpenOrdersAsync(string symbol=null, CancellationToken ct = default);
-        CallResult<List<FtxOrder>> GetOpenOrders(string symbol=null);
+        Task<CallResult<List<FtxOrder>>> GetOpenOrdersAsync(string symbol = null, CancellationToken ct = default);
+        CallResult<List<FtxOrder>> GetOpenOrders(string symbol = null);
 
         Task<CallResult<List<FtxOrder>>> GetOrdersHistoryAsync(string symbol = null, int? limit = null, DateTime? from = null, DateTime? to = null, CancellationToken ct = default);
         CallResult<List<FtxOrder>> GetOrdersHistory(string symbol = null, int? limit = null, DateTime? from = null, DateTime? to = null);
 
 
-        Task<CallResult<List<FtxOrder>>> GetOpenConditionalOrdersAsync(string symbol = null, FtxOrderType? type=null, CancellationToken ct = default);
+        Task<CallResult<List<FtxOrder>>> GetOpenConditionalOrdersAsync(string symbol = null, FtxOrderType? type = null, CancellationToken ct = default);
         CallResult<List<FtxOrder>> GetOpenConditionalOrders(string symbol = null, FtxOrderType? type = null);
 
+        Task<CallResult<List<FtxConditionalOrerTrigger>>> GetOpenConditionalOrderTriggerssAsync(long orderId, CancellationToken ct = default);
+        CallResult<List<FtxConditionalOrerTrigger>> GetOpenConditionalOrderTriggerss(long orderId);
+
+        Task<CallResult<List<FtxOrder>>> GetConditionalOrderTriggersHistoryAsync(FtxFilterRequest request, CancellationToken ct = default);
+        CallResult<List<FtxOrder>> GetConditionalOrderTriggersHistory(FtxFilterRequest request, CancellationToken ct = default);
+        /// <summary>
+        /// Please note that the order's queue priority will be reset, and the order ID of the modified order will be different from that of the original order. Also note: this is implemented as cancelling and replacing your order. There's a chance that the order meant to be cancelled gets filled and its replacement still gets placed.
+        /// </summary>
+        /// <param name="orderId">order id</param>
+        /// <param name="newPrice">optional; either price or size must be specified</param>
+        /// <param name="newSize">optional; either price or size must be specified</param>
+        /// <param name="clOrdId">optional; client ID for the modified order</param>        
+        /// <param name="ct"></param>
+        /// <returns></returns>
+        Task<CallResult<FtxOrder>> UpdateOrderAsync(FtxUpdateOrderRequest request, CancellationToken ct = default);
+        CallResult<FtxOrder> UpdateOrder(FtxUpdateOrderRequest request);
 
 
         /*
          
-         -------------======== SUBACCOUNTS =========--------------
-         -------------======== Markets =========--------------
-
-         -------------======== FUTURES =========--------------         
-     
-        -------------======== ACCOUNT =========--------------
-    
-        -------------======== WALLET =========--------------
-     
-
         -------------======== ORDERS =========--------------
         Get open orders
         Get order history

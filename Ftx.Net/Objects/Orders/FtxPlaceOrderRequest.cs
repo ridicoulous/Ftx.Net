@@ -1,4 +1,5 @@
 ﻿using Ftx.Net.Converters;
+using Ftx.Net.Interfaces;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Text;
 
 namespace Ftx.Net.Objects.Orders
 {
-    public abstract class FtxBasePlaceOrderRequest
+    public abstract class FtxBasePlaceOrderRequest : IFtxPlaceOrderReqest
     {
         /// <summary>
         /// 

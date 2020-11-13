@@ -15,24 +15,13 @@ namespace Ftx.Net.Interfaces
         [JsonProperty("side"), JsonConverter(typeof(FtxOrderSideConverter))]
         FtxOrderSide Side { get; set; }
 
-        [JsonProperty("price")]
-        decimal Price { get; set; }
-
         [JsonProperty("type"), JsonConverter(typeof(FtxOrderTypeConverter))]
         FtxOrderType Type { get; set; }
 
         [JsonProperty("size")]
         decimal Size { get; set; }
-
         [JsonProperty("reduceOnly")]
-        bool ReduceOnly { get; set; }
-
-        [JsonProperty("ioc")]
-        bool Ioc { get; set; }
-
-        [JsonProperty("postOnly")]
-        bool PostOnly { get; set; }
-
+        bool ReduceOnly { get; set; }     
         [JsonProperty("clientId")]
         string ClientId { get; set; }
     }

@@ -66,6 +66,7 @@ namespace Ftx.Net.Objects
     {
         New,
         Open,
+        Triggered,
         Closed
     }
    

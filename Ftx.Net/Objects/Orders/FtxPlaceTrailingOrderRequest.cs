@@ -1,8 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using Ftx.Net.Interfaces;
+using Newtonsoft.Json;
 
 namespace Ftx.Net.Objects.Orders
 {
-    public class FtxPlaceTrailingOrderRequest : FtxBasePlaceOrderRequest
+    public class FtxPlaceTrailingOrderRequest : FtxBasePlaceOrderRequest, IFtxTriggerOrder
     {
         /// <summary>
         /// Use it to place trailing stop order

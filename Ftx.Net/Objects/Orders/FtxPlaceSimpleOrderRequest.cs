@@ -9,7 +9,7 @@ namespace Ftx.Net.Objects.Orders
                                           FtxOrderSide side,
                                           FtxOrderType type,
                                           decimal size,
-                                          decimal price,
+                                          decimal? price=null,
                                           bool reduceOnly = false,
                                           bool ioc = false,
                                           bool postOnly = false,
@@ -23,10 +23,9 @@ namespace Ftx.Net.Objects.Orders
             Ioc = ioc;
             PostOnly = postOnly;
             Price = price;
-
         }
         [JsonProperty("price")]
-        public decimal Price { get; set; }
+        public decimal? Price { get; set; }
 
         [JsonProperty("ioc")]
         public bool Ioc { get; set; }
