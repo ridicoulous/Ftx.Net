@@ -72,7 +72,9 @@ namespace Ftx.Net.Providers
         }
         public override string Sign(string toSign)
         {
-            return ByteArrayToString(encryptor.ComputeHash(Encoding.UTF8.GetBytes(toSign)));
+            var hash = encryptor.ComputeHash(Encoding.UTF8.GetBytes(toSign));
+            var hashStringBase64 = BitConverter.ToString(hash).Replace("-", string.Empty);
+            return hashStringBase64.ToLower();
         }
         /// <summary>
         /// {ts}{prepared.method}{prepared.path_url}'

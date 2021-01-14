@@ -49,12 +49,12 @@ namespace Ftx.Net.Objects.Account
         /// ratio between total account value and total account position notional.
         /// </summary>
         [JsonProperty("marginFraction")]
-        public decimal MarginFraction { get; set; }
+        public decimal? MarginFraction { get; set; }
         /// <summary>
         /// Ratio between total realized account value and total open position notional
         /// </summary>
         [JsonProperty("openMarginFraction")]
-        public decimal OpenMarginFraction { get; set; }
+        public decimal? OpenMarginFraction { get; set; }
 
         [JsonProperty("takerFee")]
         public decimal TakerFee { get; set; }

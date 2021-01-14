@@ -34,6 +34,7 @@ namespace Ftx.Net
         private const string TradesEnpoint = "markets/{}/trades";
         private const string CandlesEnpoint = "markets/{}/candles";
         private const string FuturesEnpoint = "futures";
+        private const string AccountEndpoint = "account";
 
 
 
@@ -235,15 +236,14 @@ namespace Ftx.Net
             throw new NotImplementedException();
         }
 
-        public Task<CallResult<FtxAccountInfo>> GetAccountInfoAsync(CancellationToken ct = default)
+        public async Task<CallResult<FtxAccountInfo>> GetAccountInfoAsync(CancellationToken ct = default)
         {
-            throw new NotImplementedException();
+            var param = new Dictionary<string, object>();
+            var req = await SendRequest<FtxApiCallResult<FtxAccountInfo>>(GetUrl(FillPathParameter(AccountEndpoint)), HttpMethod.Get, ct, param, true);
+            return new CallResult<FtxAccountInfo>(req.Data?.Data, req.Error);
         }
 
-        public CallResult<FtxAccountInfo> GetAccountInfo()
-        {
-            throw new NotImplementedException();
-        }
+        public CallResult<FtxAccountInfo> GetAccountInfo() => GetAccountInfoAsync().Result;
 
         public Task<CallResult<List<FtxPosition>>> GetAccountPositionsAsync(bool? showAvgPrice = null, CancellationToken ct = default)
         {
