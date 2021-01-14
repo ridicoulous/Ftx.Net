@@ -19,6 +19,7 @@ namespace Ftx.Net.Providers
         public FtxAuthenticationProvider(FtxApiCredentials credentials) : base(credentials)
         {
             SubAccount = credentials.SubAccount;
+            encryptor = new HMACSHA256(Encoding.UTF8.GetBytes(credentials.Secret.GetString()));
         }
         private readonly HMACSHA256 encryptor;
         private readonly DateTime UnixEpox = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
@@ -41,22 +42,22 @@ namespace Ftx.Net.Providers
         }
         public FtxAuthenticationProvider(ApiCredentials credentials, TimeSpan? requestLifeTime = null) : base(credentials)
         {
-           encryptor = new HMACSHA256(Encoding.ASCII.GetBytes(credentials.Secret.GetString()));
+           encryptor = new HMACSHA256(Encoding.UTF8.GetBytes(credentials.Secret.GetString()));
         }
         public override Dictionary<string, string> AddAuthenticationToHeaders(string uri, HttpMethod method, Dictionary<string, object> parameters, bool signed, PostParameters postParameters, ArrayParametersSerialization arrayParametersSerialization)
         {
-            string ts = RequestTimestamp;
+            var _nonce = Util.Util.GetMillisecondsFromEpochStart();
             if (!signed)
                 return new Dictionary<string, string>();
             var result = new Dictionary<string, string>();
             result.Add("FTX-KEY", Credentials.Key.GetString());
-            result.Add("FTX-TS", ts);
+            result.Add("FTX-TS", _nonce.ToString());
             string additionalData = String.Empty;
             if (parameters != null && parameters.Any() && method != HttpMethod.Delete && method != HttpMethod.Get)
             {
                 additionalData = JsonConvert.SerializeObject(parameters.OrderBy(p => p.Key).ToDictionary(p => p.Key, p => p.Value));
             }
-            var dataToSign = CreateAuthPayload(method, uri.Split(new[] { ".com" }, StringSplitOptions.None)[1], ts, additionalData);
+            var dataToSign = CreateAuthPayload(method, uri.Split(new[] { ".com" }, StringSplitOptions.None)[1], _nonce, additionalData);
             var signedData = Sign(dataToSign);
             result.Add("FTX-SIGN", signedData);
             result.AddOptionalParameter("FTX-SUBACCOUNT", SubAccount);
@@ -79,9 +80,9 @@ namespace Ftx.Net.Providers
         /// <param name="methodAndUrl">GET/api/v1/orderBookL2 (for websocketauth - GET/realtime)</param>
         /// <param name="additionalData">optinal request data</param>
         /// <returns></returns>
-        public string CreateAuthPayload(HttpMethod method, string requestUrl, string requestTimestamp, string additionalData = "")
+        public string CreateAuthPayload(HttpMethod method, string requestUrl, long requestTimestamp, string additionalData = "")
         {
-            return $"{requestTimestamp}{method}{requestUrl}{additionalData}";
+            return $"{requestTimestamp}{method.ToString().ToUpper()}{requestUrl}{additionalData}";
         }
         /*
          For authenticated requests, the following headers should be sent with the request:
