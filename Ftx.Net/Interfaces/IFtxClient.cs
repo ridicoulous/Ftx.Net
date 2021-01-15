@@ -86,8 +86,8 @@ namespace Ftx.Net.Interfaces
         Task<CallResult<List<FtxCandle>>> GetFutureHistoricalIndexAsync(string symbol, FtxCandleStickResolution resolution, int? limit = null, DateTime? from = null, DateTime? to = null, CancellationToken ct = default);
         CallResult<List<FtxCandle>> GetFutureHistoricalIndex(string symbol, FtxCandleStickResolution resolution, int? limit = null, DateTime? from = null, DateTime? to = null);
 
-        Task<CallResult<FtxAccountInfo>> GetAxccountInfoAsync(CancellationToken ct = default);
-        CallResult<FtxAccountInfo> GetAxccountInfo();
+        Task<CallResult<FtxAccountInfo>> GetAccountInfoAsync(CancellationToken ct = default);
+        CallResult<FtxAccountInfo> GetAccountInfo();
 
         Task<CallResult<List<FtxPosition>>> GetAccountPositionsAsync(bool? showAvgPrice = null, CancellationToken ct = default);
         CallResult<List<FtxPosition>> GetAccountPositions(bool? showAvgPrice = null);
